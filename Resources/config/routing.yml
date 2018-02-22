@@ -1,0 +1,13 @@
+mi_comments_get:
+    path:     /comments
+    methods:  [GET]
+    defaults:
+        _controller: MICommentsBundle:Comments:get
+        _format: json
+
+mi_comments_post:
+    path:     /comments
+    methods:  [POST]
+    defaults:
+        _controller: MICommentsBundle:Comments:post
+        _format: json
