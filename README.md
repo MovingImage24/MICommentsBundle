@@ -1,5 +1,7 @@
 # Comments Bundle
 
+[![Build Status](https://travis-ci.org/MovingImage24/MICommentsBundle.svg?branch=master)](https://travis-ci.org/MovingImage24/MICommentsBundle)
+
 Symfony bundle that provides commenting functionality (posting, reading and administering comments).
 
 Features include:
