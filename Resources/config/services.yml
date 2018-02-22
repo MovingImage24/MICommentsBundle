@@ -19,3 +19,6 @@ services:
     MovingImage\Bundle\MICommentsBundle\Service\CommentsService:
         arguments:
             $autoPublish: '%mi_comments.auto_publish%'
+
+    JMS\Serializer: '@jms_serializer'
+    Symfony\Component\Validator\Validator\ValidatorInterface: '@validator'

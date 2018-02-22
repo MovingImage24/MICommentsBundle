@@ -10,7 +10,6 @@ use MovingImage\Bundle\MICommentsBundle\Service\CommentsService;
 use Symfony\Component\HttpFoundation\Request;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use JMS\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -81,16 +80,7 @@ class CommentsControllerTest extends TestCase
         $validator = $this->createMock(ValidatorInterface::class);
         $validator->method('validate')->willReturn(new ConstraintViolationList());
 
-        $container = $this->createMock(ContainerInterface::class);
-        $container->method('get')->willReturnCallback(function ($service) use ($serializer, $validator) {
-            switch ($service) {
-                case 'jms_serializer': return $serializer;
-                case 'validator': return $validator;
-            }
-        });
-
         $controller = new CommentsController();
-        $controller->setContainer($container);
 
         $commentsService = $this->prophesize(CommentsService::class);
         $request = new Request([], [], [], [], [], [], '{}');
@@ -100,7 +90,7 @@ class CommentsControllerTest extends TestCase
             ->shouldBeCalled()
         ;
 
-        $response = $controller->postAction($commentsService->reveal(), $request);
+        $response = $controller->postAction($commentsService->reveal(), $request, $serializer, $validator);
         $this->assertSame(201, $response->getStatusCode());
     }
 }

@@ -63,18 +63,22 @@ class CommentsController extends FOSRestController
      * the comment will be automatically published. Otherwise you will
      * need to publish it manually (not yet supported).
      *
-     * @param CommentsService $commentsService
-     * @param Request         $request
+     * @param CommentsService    $commentsService
+     * @param Request            $request
+     * @param Serializer         $serializer
+     * @param ValidatorInterface $validator
      *
      * @return Response
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function postAction(CommentsService $commentsService, Request $request): Response
-    {
-        /** @var Serializer $serializer */
-        $serializer = $this->get('jms_serializer');
+    public function postAction(
+        CommentsService $commentsService,
+        Request $request,
+        Serializer $serializer,
+        ValidatorInterface $validator
+    ): Response {
         $postData = $request->getContent();
         if (!$postData || !json_decode($postData)) {
             throw new BadRequestHttpException();
@@ -82,8 +86,6 @@ class CommentsController extends FOSRestController
 
         $comment = $serializer->deserialize($postData, Comment::class, 'json');
 
-        /** @var ValidatorInterface $validator */
-        $validator = $this->get('validator');
         $errors = $validator->validate($comment);
         if ($errors->count()) {
             throw new BadRequestHttpException();
