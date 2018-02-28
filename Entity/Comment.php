@@ -35,7 +35,7 @@ class Comment
     /**
      * @var string
      *
-     * @ORM\Column(name="entityTitle", type="text")
+     * @ORM\Column(name="entityTitle", type="text", nullable=true)
      */
     private $entityTitle;
 
@@ -121,7 +121,7 @@ class Comment
      *
      * @return Comment
      */
-    public function setEntityTitle(string $entityTitle): self
+    public function setEntityTitle(?string $entityTitle): self
     {
         $this->entityTitle = $entityTitle;
 
