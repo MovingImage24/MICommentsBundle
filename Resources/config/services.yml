@@ -13,8 +13,6 @@ services:
     # and have a tag that allows actions to type-hint services
     MovingImage\Bundle\MICommentsBundle\Controller\:
         resource: '../../Controller'
-        public: true
-        tags: ['controller.service_arguments']
 
     MovingImage\Bundle\MICommentsBundle\Service\CommentsService:
         arguments:
