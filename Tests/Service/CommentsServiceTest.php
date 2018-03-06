@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use MovingImage\Bundle\MICommentsBundle\DTO\Comment;
 use MovingImage\Bundle\MICommentsBundle\Entity\Comment as CommentEntity;
+use MovingImage\Bundle\MICommentsBundle\Repository\CommentRepository;
 use MovingImage\Bundle\MICommentsBundle\Service\CommentsService;
 use PHPUnit\Framework\TestCase;
 use Doctrine\ORM\EntityManager;
@@ -71,5 +74,64 @@ class CommentsServiceTest extends TestCase
 
         $commentDTO = new Comment($commentEntity);
         $service->storeComment($commentDTO);
+    }
+
+    /**
+     * @covers \CommentsService::publishComment()
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function testPublishComment()
+    {
+        $comment = new CommentEntity();
+
+        $em = $this->prophesize(EntityManager::class);
+        $em->flush($comment)->shouldBeCalled();
+
+        $service = new CommentsService($em->reveal());
+        $service->publishComment($comment);
+
+        $this->assertSame(CommentEntity::STATUS_PUBLISHED, $comment->getStatus());
+        $this->assertNotEmpty($comment->getDatePublished());
+    }
+
+    /**
+     * @covers \CommentsService::rejectComment()
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function testRejectComment()
+    {
+        $comment = new CommentEntity();
+
+        $em = $this->prophesize(EntityManager::class);
+        $em->flush($comment)->shouldBeCalled();
+
+        $service = new CommentsService($em->reveal());
+        $service->rejectComment($comment);
+
+        $this->assertSame(CommentEntity::STATUS_REJECTED, $comment->getStatus());
+        $this->assertNotEmpty($comment->getDateRejected());
+    }
+
+    /**
+     * @covers \CommentsService::rejectComment()
+     *
+     * @throws \ReflectionException
+     */
+    public function testGetCommentById()
+    {
+        $id = 123;
+        $comment = new CommentEntity();
+        $repository = $this->prophesize(CommentRepository::class);
+        $repository->find($id)->shouldBeCalled()->willReturn($comment);
+        $em = $this->createMock(EntityManager::class);
+        $em->method('getRepository')->willReturn($repository->reveal());
+
+        $service = new CommentsService($em);
+        $returnedComment = $service->getCommentById($id);
+        $this->assertSame($comment, $returnedComment);
     }
 }

@@ -13,6 +13,8 @@ services:
     # and have a tag that allows actions to type-hint services
     MovingImage\Bundle\MICommentsBundle\Controller\:
         resource: '../../Controller'
+        tags: ['controller.service_arguments']
+        public: true
 
     MovingImage\Bundle\MICommentsBundle\Service\CommentsService:
         arguments:
@@ -20,3 +22,15 @@ services:
 
     JMS\Serializer: '@jms_serializer'
     Symfony\Component\Validator\Validator\ValidatorInterface: '@validator'
+    Doctrine\ORM\EntityManager: '@doctrine.orm.entity_manager'
+
+    MovingImage\Bundle\MICommentsBundle\Admin\CommentAdmin:
+        arguments:
+            - ~
+            - MovingImage\Bundle\MICommentsBundle\Entity\Comment
+            - MovingImage\Bundle\MICommentsBundle\Controller\SonataCommentsController
+        calls:
+            - [setTemplate, ['layout', '@@MIComments/Sonata/layout.html.twig']]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Comment, group: Comments }
+        public: true

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Controller;
 
 use FOS\RestBundle\View\ViewHandler;

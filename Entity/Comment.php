@@ -6,16 +6,22 @@ namespace MovingImage\Bundle\MICommentsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
-use DateTimeZone;
 
 /**
  * Comment Entity.
  *
- * @ORM\Table(name="mi_comments_bundle_comment",indexes={@ORM\Index(name="entityId", columns={"entityId"})})
+ * @ORM\Table(name="mi_comments_bundle_comment",indexes={
+ *     @ORM\Index(name="entityId", columns={"entityId"}),
+ *     @ORM\Index(name="status", columns={"status"})
+ * })
  * @ORM\Entity(repositoryClass="MovingImage\Bundle\MICommentsBundle\Repository\CommentRepository")
  */
 class Comment
 {
+    const STATUS_PENDING = 'pending';
+    const STATUS_PUBLISHED = 'published';
+    const STATUS_REJECTED = 'rejected';
+
     /**
      * @var int
      *
@@ -75,6 +81,20 @@ class Comment
     private $datePublished;
 
     /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="dateRejected", type="datetime", nullable=true)
+     */
+    private $dateRejected;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", options={"default" = "pending"}, columnDefinition="ENUM('pending', 'rejected', 'published')")
+     */
+    private $status;
+
+    /**
      * @param DateTime $dateCreated
      */
     public function __construct(DateTime $dateCreated = null)
@@ -83,9 +103,8 @@ class Comment
             $dateCreated = new DateTime();
         }
 
-        //TODO make this configurable in bundle config
-        $dateCreated->setTimezone(new DateTimeZone('UTC'));
         $this->dateCreated = $dateCreated;
+        $this->status = self::STATUS_PENDING;
     }
 
     /**
@@ -232,6 +251,46 @@ class Comment
     public function setDatePublished(DateTime $datePublished): self
     {
         $this->datePublished = $datePublished;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDateRejected(): DateTime
+    {
+        return $this->dateRejected;
+    }
+
+    /**
+     * @param DateTime $dateRejected
+     *
+     * @return Comment
+     */
+    public function setDateRejected(DateTime $dateRejected): self
+    {
+        $this->dateRejected = $dateRejected;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     *
+     * @return Comment
+     */
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

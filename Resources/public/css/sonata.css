@@ -1,0 +1,7 @@
+.fixed .content-wrapper {
+    padding-top: 0;
+}
+
+.navbar-right.btn-group {
+    display: none;
+}

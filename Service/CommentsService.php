@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManager;
 use MovingImage\Bundle\MICommentsBundle\Entity\Comment;
 use MovingImage\Bundle\MICommentsBundle\DTO\CommentsCollection;
 use MovingImage\Bundle\MICommentsBundle\DTO\Comment as CommentDTO;
+use DateTime;
+use DateTimeZone;
 
 class CommentsService
 {
@@ -82,7 +84,7 @@ class CommentsService
         }
 
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->neq('datePublished', null))
+            ->where(Criteria::expr()->eq('status', Comment::STATUS_PUBLISHED))
             ->orderBy([self::DEFAULT_ORDER_PROPERTY => self::DEFAULT_ORDER_DIRECTION])
         ;
 
@@ -111,6 +113,8 @@ class CommentsService
     }
 
     /**
+     * Creates a new Comment entity and stores it to DB.
+     *
      * @param CommentDTO $commentDto
      *
      * @throws \Doctrine\ORM\ORMException
@@ -119,17 +123,79 @@ class CommentsService
     public function storeComment(CommentDTO $commentDto): void
     {
         $comment = new Comment();
+        $comment->setDateCreated($this->getCurrentTime());
         $comment->setEntityId($commentDto->getEntity()->getId());
         $comment->setEntityTitle($commentDto->getEntity()->getTitle());
         $comment->setUserEmail($commentDto->getUser()->getEmail());
         $comment->setUserName($commentDto->getUser()->getName());
         $comment->setComment($commentDto->getComment());
 
+        $this->entityManager->persist($comment);
+
         if ($this->autoPublish) {
-            $comment->setDatePublished($comment->getDateCreated());
+            $this->publishComment($comment);
         }
 
-        $this->entityManager->persist($comment);
         $this->entityManager->flush($comment);
+    }
+
+    /**
+     * Publishes the provided Comment entity (sets the status to 'published' and sets the datePublished property).
+     *
+     * @param Comment $comment
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function publishComment(Comment $comment): void
+    {
+        if (Comment::STATUS_PUBLISHED === $comment->getStatus()) {
+            return;
+        }
+
+        $comment->setStatus(Comment::STATUS_PUBLISHED);
+        $comment->setDatePublished($this->getCurrentTime());
+        $this->entityManager->flush($comment);
+    }
+
+    /**
+     * Rejects the provided Comment entity (sets the status to 'rejected' and sets the dateRejected property).
+     *
+     * @param Comment $comment
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function rejectComment(Comment $comment): void
+    {
+        if (Comment::STATUS_REJECTED === $comment->getStatus()) {
+            return;
+        }
+
+        $comment->setStatus(Comment::STATUS_REJECTED);
+        $comment->setDateRejected($this->getCurrentTime());
+        $this->entityManager->flush($comment);
+    }
+
+    /**
+     * Gets a Comment entity by id.
+     *
+     * @param int $id
+     *
+     * @return Comment
+     */
+    public function getCommentById(int $id): Comment
+    {
+        return $this->entityManager->getRepository(Comment::class)->find($id);
+    }
+
+    /**
+     * Returns a DateTime instance with current time and UTC time zone.
+     *
+     * @return DateTime
+     */
+    private function getCurrentTime(): DateTime
+    {
+        return new DateTime('now', new DateTimeZone('UTC'));
     }
 }
