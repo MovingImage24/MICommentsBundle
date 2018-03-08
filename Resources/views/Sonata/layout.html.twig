@@ -8,3 +8,7 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('/bundles/micomments/css/sonata.css') }}">
 {% endblock stylesheets %}
+
+{# Remove sidebar #}
+{% block sonata_left_side %}{% endblock sonata_left_side %}
+{% block body_attributes -%}class="sonata-bc skin-black fixed sidebar-collapse"{% endblock body_attributes %}
