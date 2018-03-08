@@ -61,7 +61,7 @@ class CommentsController extends FOSRestController
      *
      * If the bundle configuration option "auto_publish" is set to true
      * the comment will be automatically published. Otherwise you will
-     * need to publish it manually (not yet supported).
+     * need to publish it manually from the admin section.
      *
      * @param CommentsService    $commentsService
      * @param Request            $request

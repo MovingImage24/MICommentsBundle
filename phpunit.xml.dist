@@ -12,6 +12,7 @@
         <whitelist>
             <directory>./</directory>
             <exclude>
+                <directory>./Admin</directory>
                 <directory>./DependencyInjection</directory>
                 <directory>./DTO</directory>
                 <directory>./Entity</directory>
