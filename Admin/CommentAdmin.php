@@ -26,6 +26,11 @@ class CommentAdmin extends AbstractAdmin
     ];
 
     /**
+     * @var string
+     */
+    protected $translationDomain = 'MICommentsBundle';
+
+    /**
      * {@inheritdoc}
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -42,6 +47,7 @@ class CommentAdmin extends AbstractAdmin
                 Comment::STATUS_REJECTED => Comment::STATUS_REJECTED,
                 Comment::STATUS_PENDING => Comment::STATUS_PENDING,
             ],
+            'translation_domain' => $this->translationDomain,
         ]);
     }
 

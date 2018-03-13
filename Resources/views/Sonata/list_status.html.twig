@@ -1,5 +1,7 @@
 {% extends get_admin_template('base_list_field', admin.code) %}
 
+{% trans_default_domain 'MICommentsBundle' %}
+
 {%- block field %}
 
     {% if value == 'pending' %}
@@ -10,6 +12,6 @@
         {% set class = 'label-success' %}
     {% endif %}
 
-    <span class="label {{ class }}">{{ value }}</span>
+    <span class="label {{ class }}">{{ value | trans }}</span>
 
 {% endblock %}
