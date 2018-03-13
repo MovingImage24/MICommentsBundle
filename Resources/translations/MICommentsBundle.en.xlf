@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="publish">
+                <source>publish</source>
+                <target>Publish</target>
+            </trans-unit>
+            <trans-unit id="reject">
+                <source>reject</source>
+                <target>Reject</target>
+            </trans-unit>
+            <trans-unit id="pending">
+                <source>pending</source>
+                <target>Pending</target>
+            </trans-unit>
+            <trans-unit id="published">
+                <source>published</source>
+                <target>Published</target>
+            </trans-unit>
+            <trans-unit id="rejected">
+                <source>rejected</source>
+                <target>Rejected</target>
+            </trans-unit>
+            <trans-unit id="entity_id">
+                <source>Entity Id</source>
+                <target>Entity Id</target>
+            </trans-unit>
+            <trans-unit id="entity_title">
+                <source>Entity Title</source>
+                <target>Entity Title</target>
+            </trans-unit>
+            <trans-unit id="user_name">
+                <source>User Name</source>
+                <target>User Name</target>
+            </trans-unit>
+            <trans-unit id="user_email">
+                <source>User Email</source>
+                <target>User Email</target>
+            </trans-unit>
+            <trans-unit id="comment">
+                <source>Comment</source>
+                <target>Comment</target>
+            </trans-unit>
+            <trans-unit id="date_created">
+                <source>Date Created</source>
+                <target>Date Created</target>
+            </trans-unit>
+            <trans-unit id="status">
+                <source>Status</source>
+                <target>Status</target>
+            </trans-unit>
+            <trans-unit id="action">
+                <source>Action</source>
+                <target>Action</target>
+            </trans-unit>
+            <trans-unit id="comment_list">
+                <source>Comment List</source>
+                <target>Comment List</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
