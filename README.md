@@ -46,6 +46,8 @@ You may choose a different prefix if required.
 ```
 mi_comments:
    auto_publish: true //optional, by default is false
+   css: /path/to/css/file //optional
+   display_max_length: 100 //optional
 ```
 
 ### Configure doctrine migrations bundle in config.yml (optional)
@@ -118,9 +120,11 @@ You may choose a different prefix if required.
 
 ## Configuration parameters
 
-Parameter       | Type      | Default   | Required  | Description
-----------------|-----------|-----------|-----------|------------
-auto_publish    | boolean   | false     | no        | If true, comments are automatically published
+Parameter           | Type      | Default   | Required  | Description
+--------------------|-----------|-----------|-----------|------------
+auto_publish        | boolean   | false     | no        | If true, comments are automatically published.
+css                 | string    | null      | no        | Path to CSS file. If provided, will be included in the sonata layout.
+display_max_length  | int       | 20        | no        | Maximum length of the comment displayed in the sonata list.
 
 ## Usage
 

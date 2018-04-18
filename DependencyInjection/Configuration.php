@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MovingImage\Bundle\MICommentsBundle\DependencyInjection;
 
+use MovingImage\Bundle\MICommentsBundle\Admin\CommentAdmin;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -24,6 +25,8 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('auto_publish')->defaultValue(false)->end()
+                ->scalarNode('css')->defaultValue(null)->end()
+                ->scalarNode('display_max_length')->defaultValue(CommentAdmin::DEFAULT_COMMENT_DISPLAY_MAX_LENGTH)->end()
             ->end()
         ;
 
