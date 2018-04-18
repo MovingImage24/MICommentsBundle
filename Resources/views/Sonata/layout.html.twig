@@ -2,11 +2,13 @@
 
 {# Remove sonata header - it's pretty useless when you only have one admin class #}
 {% block sonata_header %}{% endblock sonata_header %}
-
 {# Add custom stylesheets #}
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('/bundles/micomments/css/sonata.css') }}">
+    {% if mi_comments_css %}
+        <link rel="stylesheet" href="{{ asset(mi_comments_css) }}">
+    {% endif %}
 {% endblock stylesheets %}
 
 {# Remove sidebar #}

@@ -14,6 +14,11 @@ use Sonata\AdminBundle\Show\ShowMapper;
 class CommentAdmin extends AbstractAdmin
 {
     /**
+     * Default value for commentsDisplayMaxLength.
+     */
+    const DEFAULT_COMMENT_DISPLAY_MAX_LENGTH = 20;
+
+    /**
      * Default datagrid values.
      * Assures that comments are sorted by dateCreated descending by default.
      *
@@ -29,6 +34,13 @@ class CommentAdmin extends AbstractAdmin
      * @var string
      */
     protected $translationDomain = 'MICommentsBundle';
+
+    /**
+     * Max length of the comment in the list view.
+     *
+     * @var int
+     */
+    private $commentDisplayMaxLength = self::DEFAULT_COMMENT_DISPLAY_MAX_LENGTH;
 
     /**
      * {@inheritdoc}
@@ -62,6 +74,7 @@ class CommentAdmin extends AbstractAdmin
         $listMapper->addIdentifier('entityTitle');
         $listMapper->addIdentifier('comment', null, [
             'template' => '@MIComments/Sonata/list_truncated.html.twig',
+            'length' => $this->getCommentDisplayMaxLength(),
         ]);
         $listMapper->addIdentifier('dateCreated');
         $listMapper->addIdentifier('status', null, [
@@ -121,5 +134,21 @@ class CommentAdmin extends AbstractAdmin
         $collection->remove('delete');
         $collection->add('publish', $this->getRouterIdParameter().'/publish');
         $collection->add('reject', $this->getRouterIdParameter().'/reject');
+    }
+
+    /**
+     * @return int
+     */
+    public function getCommentDisplayMaxLength(): int
+    {
+        return $this->commentDisplayMaxLength;
+    }
+
+    /**
+     * @param int $commentDisplayMaxLength
+     */
+    public function setCommentDisplayMaxLength(int $commentDisplayMaxLength): void
+    {
+        $this->commentDisplayMaxLength = $commentDisplayMaxLength;
     }
 }

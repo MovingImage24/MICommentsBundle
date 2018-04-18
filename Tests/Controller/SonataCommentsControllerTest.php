@@ -10,6 +10,7 @@ use MovingImage\Bundle\MICommentsBundle\Entity\Comment;
 use MovingImage\Bundle\MICommentsBundle\Service\CommentsService;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -75,6 +76,8 @@ class SonataCommentsControllerTest extends TestCase
                     return $requestStack;
                 case 'sonata.admin.pool':
                     return $pool;
+                case '.template_registry':
+                    return new TemplateRegistry();
             }
         });
 

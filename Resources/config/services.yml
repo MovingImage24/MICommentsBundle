@@ -31,6 +31,7 @@ services:
             - MovingImage\Bundle\MICommentsBundle\Controller\SonataCommentsController
         calls:
             - [setTemplate, ['layout', '@@MIComments/Sonata/layout.html.twig']]
+            - [setCommentDisplayMaxLength, ['%mi_comments.display_max_length%']]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Comment, group: Comments }
         public: true
