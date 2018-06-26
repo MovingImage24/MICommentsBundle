@@ -9,7 +9,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 
 class CommentAdmin extends AbstractAdmin
 {
@@ -47,12 +47,13 @@ class CommentAdmin extends AbstractAdmin
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
+        $datagridMapper->add('dateCreated', 'doctrine_orm_datetime_range');
         $datagridMapper->add('userName');
         $datagridMapper->add('userEmail');
         $datagridMapper->add('entityId');
         $datagridMapper->add('entityTitle');
         $datagridMapper->add('comment');
-        $datagridMapper->add('dateCreated', 'doctrine_orm_datetime_range');
+        $datagridMapper->add('administratorReply');
         $datagridMapper->add('status', 'doctrine_orm_choice', [], 'choice', [
             'choices' => [
                 Comment::STATUS_PUBLISHED => Comment::STATUS_PUBLISHED,
@@ -68,6 +69,7 @@ class CommentAdmin extends AbstractAdmin
      */
     protected function configureListFields(ListMapper $listMapper)
     {
+        $listMapper->addIdentifier('dateCreated');
         $listMapper->addIdentifier('userName');
         $listMapper->addIdentifier('userEmail');
         $listMapper->addIdentifier('entityId');
@@ -76,11 +78,10 @@ class CommentAdmin extends AbstractAdmin
             'template' => '@MIComments/Sonata/list_truncated.html.twig',
             'length' => $this->getCommentDisplayMaxLength(),
         ]);
-        $listMapper->addIdentifier('dateCreated');
+        $listMapper->addIdentifier('administratorReply', 'boolean');
         $listMapper->addIdentifier('status', null, [
             'template' => '@MIComments/Sonata/list_status.html.twig',
         ]);
-
         $listMapper->add('_action', null, [
             'actions' => [
                 'publish' => [
@@ -96,15 +97,23 @@ class CommentAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureShowFields(ShowMapper $showMapper)
+    protected function configureFormFields(FormMapper $formMapper)
     {
-        $showMapper->add('userName');
-        $showMapper->add('userEmail');
-        $showMapper->add('entityId');
-        $showMapper->add('entityTitle');
-        $showMapper->add('comment');
-        $showMapper->add('dateCreated');
-        $showMapper->add('status');
+        $formMapper->add('userName', 'text', ['disabled' => true]);
+        $formMapper->add('userEmail', 'text', ['disabled' => true]);
+        $formMapper->add('entityId', 'text', ['disabled' => true]);
+        $formMapper->add('entityTitle', 'text', ['disabled' => true]);
+        //$formMapper->add('dateCreated', 'text', ['disabled'  => true]);
+        $formMapper->add('status', 'choice', [
+            'choices' => [
+                Comment::STATUS_PUBLISHED => Comment::STATUS_PUBLISHED,
+                Comment::STATUS_REJECTED => Comment::STATUS_REJECTED,
+                Comment::STATUS_PENDING => Comment::STATUS_PENDING
+            ]
+        ]);
+        $formMapper->add('comment', 'textarea', ['disabled' => true]);
+        $formMapper->add('administratorReply', 'textarea', ['required' => false]);
+
     }
 
     /**
@@ -129,9 +138,8 @@ class CommentAdmin extends AbstractAdmin
     public function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('export');
-        $collection->remove('edit');
         $collection->remove('create');
-        $collection->remove('delete');
+        $collection->remove('show');
         $collection->add('publish', $this->getRouterIdParameter().'/publish');
         $collection->add('reject', $this->getRouterIdParameter().'/reject');
     }

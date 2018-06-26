@@ -67,6 +67,13 @@ class Comment
     private $comment;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="administratorReply", type="text", nullable=true)
+     */
+    private $administratorReply;
+
+    /**
      * @var DateTime
      *
      * @ORM\Column(name="dateCreated", type="datetime")
@@ -213,6 +220,26 @@ class Comment
     public function getComment(): ?string
     {
         return $this->comment;
+    }
+
+    /**
+     * @param null|string $administratorReply
+     *
+     * @return Comment
+     */
+    public function setAdministratorReply(?string $administratorReply): self
+    {
+        $this->administratorReply = $administratorReply;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getAdministratorReply(): ?string
+    {
+        return $this->administratorReply;
     }
 
     /**
