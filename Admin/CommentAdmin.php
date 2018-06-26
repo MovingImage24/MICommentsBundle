@@ -103,7 +103,6 @@ class CommentAdmin extends AbstractAdmin
         $formMapper->add('userEmail', 'text', ['disabled' => true]);
         $formMapper->add('entityId', 'text', ['disabled' => true]);
         $formMapper->add('entityTitle', 'text', ['disabled' => true]);
-        //$formMapper->add('dateCreated', 'text', ['disabled'  => true]);
         $formMapper->add('status', 'choice', [
             'choices' => [
                 Comment::STATUS_PUBLISHED => Comment::STATUS_PUBLISHED,
@@ -111,9 +110,8 @@ class CommentAdmin extends AbstractAdmin
                 Comment::STATUS_PENDING => Comment::STATUS_PENDING
             ]
         ]);
-        $formMapper->add('comment', 'textarea', ['disabled' => true]);
-        $formMapper->add('administratorReply', 'textarea', ['required' => false]);
-
+        $formMapper->add('comment', 'textarea', ['disabled' => true, 'attr' => ['rows' => '8']]);
+        $formMapper->add('administratorReply', 'textarea', ['required' => false, 'attr' => ['rows' => '8']]);
     }
 
     /**
