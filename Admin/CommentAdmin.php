@@ -107,8 +107,8 @@ class CommentAdmin extends AbstractAdmin
             'choices' => [
                 Comment::STATUS_PUBLISHED => Comment::STATUS_PUBLISHED,
                 Comment::STATUS_REJECTED => Comment::STATUS_REJECTED,
-                Comment::STATUS_PENDING => Comment::STATUS_PENDING
-            ]
+                Comment::STATUS_PENDING => Comment::STATUS_PENDING,
+            ],
         ]);
         $formMapper->add('comment', 'textarea', ['disabled' => true, 'attr' => ['rows' => '8']]);
         $formMapper->add('administratorReply', 'textarea', ['required' => false, 'attr' => ['rows' => '8']]);
