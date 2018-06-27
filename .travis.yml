@@ -4,10 +4,13 @@ matrix:
   fast_finish: true
   include:
     - php: 7.1
-
+env:
+  global:
+    COMPOSER_MEMORY_LIMIT=-1
+before_install:
+  - composer self-update
 install:
   - composer install
-
 script:
   - ./vendor/bin/check_code_style.sh
   - ./vendor/bin/phpunit
