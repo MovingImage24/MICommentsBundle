@@ -4,8 +4,8 @@ matrix:
   fast_finish: true
   include:
     - php: 7.1
-
+install:
+   - /home/travis/.phpenv/shims/composer install
 script:
-  - php -d memory_limit=-1  $(which composer) install
   - ./vendor/bin/check_code_style.sh
   - ./vendor/bin/phpunit
