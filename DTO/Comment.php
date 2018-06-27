@@ -51,6 +51,13 @@ class Comment
     private $comment;
 
     /**
+     * @var string
+     * @JMS\Expose()
+     * @JMS\Type("string")
+     */
+    private $administratorReply;
+
+    /**
      * @var DateTime
      * @JMS\Expose()
      * @JMS\Type("DateTime<'Y-m-d H:i:s'>")
@@ -69,6 +76,7 @@ class Comment
         $this->entity = new Entity($commentEntity->getEntityId(), $commentEntity->getEntityTitle());
         $this->comment = $commentEntity->getComment();
         $this->dateCreated = $commentEntity->getDateCreated();
+        $this->administratorReply = $commentEntity->getAdministratorReply();
     }
 
     /**
@@ -101,6 +109,14 @@ class Comment
     public function getComment(): ?string
     {
         return $this->comment;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdministratorReply(): ?string
+    {
+        return $this->administratorReply;
     }
 
     /**
