@@ -4,8 +4,10 @@ matrix:
   fast_finish: true
   include:
     - php: 7.1
+before_install:
+  - composer self-update
 install:
-   - php -d memory_limit=-1 /home/travis/.phpenv/shims/composer install
+   - composer install
 script:
   - ./vendor/bin/check_code_style.sh
   - ./vendor/bin/phpunit
