@@ -126,9 +126,12 @@ class CommentsService
         $comment->setDateCreated($this->getCurrentTime());
         $comment->setEntityId($commentDto->getEntity()->getId());
         $comment->setEntityTitle($commentDto->getEntity()->getTitle());
-        $comment->setUserEmail($commentDto->getUser()->getEmail());
         $comment->setUserName($commentDto->getUser()->getName());
         $comment->setComment($commentDto->getComment());
+
+        if ($commentDto->getUser()->getEmail()) {
+            $comment->setUserEmail($commentDto->getUser()->getEmail());
+        }
 
         $this->entityManager->persist($comment);
 

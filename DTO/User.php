@@ -19,7 +19,6 @@ class User
      * @var string
      * @JMS\Expose()
      * @JMS\Type("string")
-     * @Assert\NotBlank()
      */
     private $email;
 
