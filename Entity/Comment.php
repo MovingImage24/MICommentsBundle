@@ -55,7 +55,7 @@ class Comment
     /**
      * @var string
      *
-     * @ORM\Column(name="userEmail", type="text")
+     * @ORM\Column(name="userEmail", type="text", nullable=true)
      */
     private $userEmail;
 
